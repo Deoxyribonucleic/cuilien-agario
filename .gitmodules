@@ -1,0 +1,6 @@
+[submodule "client"]
+	path = client
+	url = https://github.com/Deoxyribonucleic/cuilien-agar-client
+[submodule "cuilien"]
+	path = cuilien
+	url = https://github.com/Deoxyribonucleic/cuilien
