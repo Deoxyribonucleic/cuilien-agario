@@ -4,3 +4,6 @@
 [submodule "cuilien"]
 	path = cuilien
 	url = https://github.com/Deoxyribonucleic/cuilien
+[submodule "depend/dawn"]
+	path = depend/dawn
+	url = https://github.com/Deoxyribonucleic/dawn

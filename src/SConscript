@@ -1,9 +1,14 @@
-env = Environment(CPPPATH=[".", "../cuilien"], CPPFLAGS="-std=c++11", CFLAGS="-std=c99", LIBPATH="../cuilien/build")
+env = Environment(CPPPATH=[".", "../cuilien", "../depend/dawn/src"], CPPFLAGS="-std=c++14", CFLAGS="-std=c99", LIBPATH=["../cuilien/build", "../depend/dawn/build"])
 
 
 # Source section
 sources = Split("""
 main.cpp
+log/logger.cpp
+comm/comm_server.cpp
+comm/comm_client.cpp
+comm/ip_comm_server.cpp
+comm/ip_comm_client.cpp
 """)
 
 
@@ -12,5 +17,5 @@ objects = env.Object(source = sources)
 
 
 # Target section
-binary = env.Program(target = "bin", source = objects, LIBS = ["cuilien"])
+binary = env.Program(target = "bin", source = objects, LIBS = ["pthread", "cuilien", "dawn-log", "dawn-data"])
 
