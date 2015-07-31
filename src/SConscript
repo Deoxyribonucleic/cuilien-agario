@@ -17,5 +17,5 @@ objects = env.Object(source = sources)
 
 
 # Target section
-binary = env.Program(target = "bin", source = objects, LIBS = ["pthread", "cuilien", "dawn-log", "dawn-data"])
+binary = env.Program(target = "bin", source = objects, LIBS = ["pthread", "cuilien", "dawn-log", "dawn-data", "boost_system"])
 

@@ -13,6 +13,6 @@ namespace caio
 		comm_server();
 		virtual ~comm_server();
 		
-		virtual std::vector<std::unique_ptr<comm_client>> listen() = 0;
+		virtual void accept(std::vector<std::unique_ptr<comm_client>>& out) = 0;
 	};
 }
