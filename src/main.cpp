@@ -4,6 +4,7 @@
 
 #include "log/logger.hpp"
 #include "comm/ip_comm_server.hpp"
+#include "bot_manager.hpp"
 
 using namespace caio;
 
@@ -28,12 +29,23 @@ int main()
 	try
 	{
 		logger::get("main").info() << "initializing..." << std::endl;
-		std::unique_ptr<caio::ip_comm_server> server = std::make_unique<caio::ip_comm_server>(12314);
+
+		caio::ip_comm_server server(12314);
+		caio::bot_manager bot_mgr;
+		
 		logger::get("main").info() << "initialized" << std::endl;
 
 		while(!stop)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			bot_mgr.tick();
+			
+			std::vector<std::unique_ptr<comm_client>> new_clients;
+			server.accept(new_clients);
+			
+			for(auto& client: new_clients)
+			{
+				bot_mgr.create_new_bot(std::move(client));
+			}
 		}
 
 		logger::get("main").info() << "shutting down..." << std::endl;
@@ -44,7 +56,6 @@ int main()
 	}
 
 	logger::get("main").info() << "shut down" << std::endl;
-
 	logger::get("main").info() << "goodbye" << std::endl;
 	return 0;
 }

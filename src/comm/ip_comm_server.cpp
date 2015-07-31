@@ -8,7 +8,8 @@ ip_comm_server::ip_comm_server(unsigned short port)
 	: m_logger(logger::get("ip-server")),
 	m_port(port),
 	m_acceptor(m_io_service, boost::asio::ip::tcp::endpoint(
-				boost::asio::ip::tcp::v4(), port))
+				boost::asio::ip::tcp::v4(), port)),
+	m_socket(m_io_service)
 {
 	m_logger.info() << "starting..." << std::endl;
 	m_thread = std::thread(std::bind(&ip_comm_server::thread_func, this));
@@ -47,18 +48,16 @@ void ip_comm_server::thread_func()
 
 void ip_comm_server::start_accept()
 {
-	auto new_client = new ip_comm_client(m_io_service);
-
-	m_acceptor.async_accept(new_client->get_socket(),
-			std::bind(&ip_comm_server::handle_accept, this, new_client));
+	m_acceptor.async_accept(m_socket,
+			std::bind(&ip_comm_server::handle_accept, this));
 }
 
-void ip_comm_server::handle_accept(ip_comm_client* client)
+void ip_comm_server::handle_accept()
 {
-	m_logger.info() << "new connection from " << client->get_socket().remote_endpoint() << std::endl;
+	m_logger.info() << "incoming connection from " << m_socket.remote_endpoint() << std::endl;
 	
 	std::lock_guard<std::mutex> guard(m_lock);
-	m_accept_queue.push_back(std::unique_ptr<ip_comm_client>(client));
+	m_accept_queue.push_back(std::make_unique<ip_comm_client>(std::move(m_socket)));
 	
 	start_accept();
 }

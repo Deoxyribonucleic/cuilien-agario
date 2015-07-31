@@ -23,7 +23,7 @@ namespace caio
 		void thread_func();
 
 		void start_accept();
-		void handle_accept(ip_comm_client* client);
+		void handle_accept();
 		
 		logger& m_logger;
 
@@ -33,6 +33,7 @@ namespace caio
 		std::thread m_thread;
 		boost::asio::io_service m_io_service;
 		boost::asio::ip::tcp::acceptor m_acceptor;
+		boost::asio::ip::tcp::socket m_socket;
 		
 		std::vector<std::unique_ptr<ip_comm_client>> m_accept_queue;
 	};

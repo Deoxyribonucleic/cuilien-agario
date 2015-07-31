@@ -1,9 +1,11 @@
-env = Environment(CPPPATH=[".", "../cuilien", "../depend/dawn/src"], CPPFLAGS="-std=c++14", CFLAGS="-std=c99", LIBPATH=["../cuilien/build", "../depend/dawn/build"])
+env = Environment(CPPPATH=[".", "../cuilien", "../depend/dawn/src"], CPPFLAGS="-std=c++14 -g", CFLAGS="-std=c99", LIBPATH=["../cuilien/build", "../depend/dawn/build"])
 
 
 # Source section
 sources = Split("""
 main.cpp
+bot.cpp
+bot_manager.cpp
 log/logger.cpp
 comm/comm_server.cpp
 comm/comm_client.cpp
