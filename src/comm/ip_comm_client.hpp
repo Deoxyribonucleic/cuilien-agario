@@ -2,6 +2,8 @@
 
 #include <boost/asio.hpp>
 
+#include <dawn/data/buffer.hpp>
+
 #include "log/logger.hpp"
 #include "comm_client.hpp"
 
@@ -20,10 +22,12 @@ namespace caio
 	private:
 		void start_read();
 		void handle_read(boost::system::error_code error, size_t length);
+		
 
 		logger& m_logger;
-		char m_buffer[1];
+		dawn::data::buffer m_buffer;
 		bool m_connected;
 		boost::asio::ip::tcp::socket m_socket;
+		size_t m_recvLength;
 	};
 }
