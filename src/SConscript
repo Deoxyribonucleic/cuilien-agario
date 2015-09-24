@@ -6,6 +6,7 @@ sources = Split("""
 main.cpp
 bot.cpp
 bot_manager.cpp
+ivt.cpp
 log/logger.cpp
 comm/comm_server.cpp
 comm/comm_client.cpp

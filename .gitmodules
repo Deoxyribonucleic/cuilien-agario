@@ -7,3 +7,6 @@
 [submodule "depend/dawn"]
 	path = depend/dawn
 	url = https://github.com/Deoxyribonucleic/dawn
+[submodule "cuilien-assembler"]
+	path = cuilien-assembler
+	url = git@github.com:Deoxyribonucleic/cuilien-assembler

@@ -2,32 +2,49 @@
 
 namespace caio
 {
-	class message
+	struct message
 	{
-	public:
 		message();
 		virtual ~message();
 
-		enum class type : int
+		enum struct type : int
 		{
 			ready = 1,
-			respawn,
-			update
+			respawn = 2,
+			death = 3,
+			update = 4,
+			set_target = 5,
+			spawned = 6
 		};
 
 		virtual type opcode() const = 0;
 	};
 	
-	class ready_message : public message
+	struct ready_message : message
 	{
-	public:
 		type opcode() const { return type::ready; }
 	};
 	
-	class respawn_message : public message
+	struct respawn_message : message
 	{
-	public:
 		type opcode() const { return type::respawn; }
+	};
+	
+	struct death_message : message
+	{
+		type opcode() const { return type::death; }
+	};
+
+	struct set_target_message : message
+	{
+		type opcode() const { return type::set_target; }
+		set_target_message(int x, int y) : x(x), y(y) {}
+		int x, y;
+	};
+	
+	struct spawned_message : message
+	{
+		type opcode() const { return type::spawned; }
 	};
 }
 

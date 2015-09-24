@@ -7,3 +7,5 @@ build/
 *.cx
 *.hdex
 *.dump
+/seed.asm
+*.cx

@@ -73,12 +73,9 @@ void ip_comm_client::handle_read(boost::system::error_code error, size_t length)
 		dawn::data::uint16 length;
 		length.deserialize(m_buffer);
 		m_recvLength = *length;
-
-		m_logger.info() << "length header: " << *length << std::endl;
 	}
 	else
 	{
-		m_buffer.print_data();
 		parse_buffer_data();
 		m_recvLength = 0;
 	}
@@ -90,7 +87,6 @@ void ip_comm_client::parse_buffer_data()
 {
 	dawn::data::uint8(0).serialize(m_buffer); // null terminate string
 	std::string str_data((char*)m_buffer.data());
-	std::cout << str_data << std::endl;
 	queue_message(m_message_parser.parse(str_data));
 }
 
