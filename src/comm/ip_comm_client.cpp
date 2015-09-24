@@ -1,8 +1,11 @@
 #include "ip_comm_client.hpp"
 
-#include <iostream>
-
 #include <dawn/data/integral.hpp>
+#include <dawn/data/string.hpp>
+
+#include <boost/bind.hpp>
+
+#include <iostream>
 
 using namespace caio;
 
@@ -47,6 +50,8 @@ void ip_comm_client::start_read()
 				this,
 				std::placeholders::_1,
 				std::placeholders::_2));
+
+	m_buffer.accept(length);
 }
 
 void ip_comm_client::handle_read(boost::system::error_code error, size_t length)
@@ -73,9 +78,39 @@ void ip_comm_client::handle_read(boost::system::error_code error, size_t length)
 	}
 	else
 	{
+		m_buffer.print_data();
+		parse_buffer_data();
 		m_recvLength = 0;
 	}
 
 	start_read();
+}
+
+void ip_comm_client::parse_buffer_data()
+{
+	dawn::data::uint8(0).serialize(m_buffer); // null terminate string
+	std::string str_data((char*)m_buffer.data());
+	std::cout << str_data << std::endl;
+	queue_message(m_message_parser.parse(str_data));
+}
+
+void ip_comm_client::handler(boost::system::error_code const&, std::size_t)
+{
+}
+
+void ip_comm_client::send_message(message const& msg)
+{
+	dawn::data::buffer buffer;
+
+	dawn::data::string data(m_message_parser.build(msg));
+	data.serialize(buffer);
+
+	//m_socket.async_write(boost::asio::buffer(buffer.data(), buffer.size()),
+	//boost::asio::async_write(m_socket,
+	m_socket.async_send(
+			boost::asio::buffer(buffer.data(), buffer.size()),
+			0, boost::bind(&ip_comm_client::handler, this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred));
 }
 

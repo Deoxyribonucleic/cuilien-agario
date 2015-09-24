@@ -22,6 +22,16 @@ bot::status bot::tick()
 	if(!m_comm_client->is_connected())
 		return bot::status::disconnected;
 
+	std::unique_ptr<message> msg;
+	while((msg = m_comm_client->pop_message()))
+	{
+		if(msg->opcode() == message::type::ready)
+		{
+			m_logger.info() << "client ready; sending spawn command" << std::endl;
+			m_comm_client->send_message(respawn_message());
+		}
+	}
+
 	return bot::status::ok;
 }
 
