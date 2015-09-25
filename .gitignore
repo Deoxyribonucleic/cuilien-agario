@@ -9,3 +9,4 @@ build/
 *.dump
 /seed.asm
 *.cx
+config.json
