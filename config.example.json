@@ -1,0 +1,6 @@
+{
+	"port": 12314,
+	"simulator": "alpha",
+	"mysql_user": "cagar",
+	"mysql_pass": "hunter2"
+}
