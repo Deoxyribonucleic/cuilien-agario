@@ -7,6 +7,7 @@
 #include "comm/ip_comm_server.hpp"
 #include "bot_manager.hpp"
 #include "ivt.hpp"
+#include "config.hpp"
 
 extern "C"
 {
@@ -36,6 +37,11 @@ int main()
 	logger::get("main").info() << "cuilien agar.io brain" << std::endl;
 	
 	signal(SIGINT, signal_handler);
+
+	config cfg;
+	if (cfg.load_config("config.json")) {
+		logger::get("main").info() << "Config file 'config.json' loaded" << std::endl;
+	}
 
 	try
 	{

@@ -5,6 +5,8 @@
 
 #include <rapidjson/document.h>
 
+#include "log/logger.hpp"
+
 namespace caio 
 {
 	class config 
@@ -15,13 +17,19 @@ namespace caio
 
 			bool load_config(std::string const& filename);
 
-			// Also need default values
+			// Trying to grab a value that doesn't exist will
+			// return a "default" value for that type and
+			// print a warning in the log
 			int getInt(std::string const& key);
-			float getFloat(std::string const& key);
-			std::unique_ptr<std::string> getString(std::string const& key);
+			double getDouble(std::string const& key);
+			std::string getString(std::string const& key);
 			bool getBool(std::string const& key);
 
 		private:
-			std::unique_ptr<rapidjson::Document> m_document;
+			bool check_key(std::string const& key);
+
+			rapidjson::Document m_document;
+			logger& m_logger;
+
 	};
 }
