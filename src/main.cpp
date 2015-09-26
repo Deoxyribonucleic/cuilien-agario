@@ -66,7 +66,7 @@ int main()
 		cpu->ivt = ivt::build();
 
 		logger::get("main").info() << "initializing comms server..." << std::endl;
-		caio::ip_comm_server server(12314);
+		caio::ip_comm_server server(cfg.getInt("port"));
 
 		logger::get("main").info() << "initializing bot manager..." << std::endl;
 		caio::bot_manager bot_mgr;
